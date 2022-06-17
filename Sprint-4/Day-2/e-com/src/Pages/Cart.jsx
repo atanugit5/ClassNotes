@@ -3,7 +3,8 @@ import { Box, Heading, Stack, Image,Text, Button, useColorModeValue } from "@cha
 import React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { removeProductCart } from "../Redux/products/action";
+import Checkout from "../Components/Checkout";
+import { addOrder, removeProductCart } from "../Redux/products/action";
 import { Rating } from "./Product";
 
 const Cart = () => {
@@ -13,7 +14,7 @@ const Cart = () => {
     dispatch(removeProductCart(id))
   }
   const checkOutHandler=()=>{
-
+    dispatch(addOrder(cart))
   }
  
 
@@ -21,8 +22,9 @@ const Cart = () => {
     <Box textAlign={"center"}>
       <Heading as="h2">Cart Items</Heading>
       {cart.map((el) => (
-        <CartItem key={el.id} {...el} removeProduct={removeProduct} checkOutHandler={checkOutHandler}/>
+        <CartItem key={el.id} {...el} removeProduct={removeProduct} />
       ))}
+      {cart.length ?<Checkout cart={cart} checkOutHandler={checkOutHandler}/>:<Box><Text fontSize={"2xl"}>Cart is empty</Text></Box> }
     </Box>
   );
 };
@@ -100,23 +102,7 @@ const CartItem = ({
           <Box>{Rating({rating:Number(rating?.rate)})}</Box>
         </Stack>
         <Button variant={"solid"} m={"10px"} leftIcon={<DeleteIcon/>} onClick={()=>removeProduct(id)}>Remove</Button>
-        <Button
-            rounded={"none"}
-            w={"full"}
-            mt={8}
-            size={"lg"}
-            py={"7"}
-            bg={useColorModeValue("gray.900", "gray.50")}
-            color={useColorModeValue("white", "gray.900")}
-            textTransform={"uppercase"}
-            _hover={{
-              transform: "translateY(2px)",
-              boxShadow: "lg",
-            }}
-            // onClick={checkOutHandler}
-          >
-            CHECKOUT
-          </Button>
+     
         </Box>
       </Stack>
     </Box>

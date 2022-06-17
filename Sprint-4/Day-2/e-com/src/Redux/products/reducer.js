@@ -5,6 +5,7 @@ const initialState = {
   error: "",
   currentProduct: {},
   cart: [],
+  order:[]
 };
 
 export const productReducer = (state = initialState, action) => {
@@ -58,6 +59,19 @@ export const productReducer = (state = initialState, action) => {
     case types.REMOVE_PRODUCT_CART_FAILURE:
       return { ...state, loading: false, error: payload };
     //====================//
+    
+    case types.FETCH_ORDER_REQUEST:
+      return { ...state, loading: true, error: false };
+    case types.FETCH_ORDER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        order:payload,
+        error: false,
+      };
+    case types.FETCH_ORDER_FAILURE:
+      return { ...state, loading: false, error: payload };
+      //======================//
     
     default:
       return state;
